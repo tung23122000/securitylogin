@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DataLRespository extends JpaRepository<DataL, Long> {
+
     @Query(nativeQuery = true ,value = "SELECT * FROM data_log WHERE user_name LIKE ?1")
-    DataL findByEmail(String username);
+    DataL findByName(String username);
 }

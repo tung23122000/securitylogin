@@ -1,5 +1,6 @@
 package dts.com.login.service.impl;
 
+import dts.com.login.entity.CustomDataDetails;
 import dts.com.login.entity.DataL;
 import dts.com.login.respository.DataLRespository;
 import dts.com.login.service.DataLService;
@@ -20,13 +21,12 @@ public class DataLServiceImpl implements DataLService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DataL dataL = dataLRespository.findByEmail(username);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        DataL dataL = dataLRespository.findByName(userName);
         if (dataL == null) {
             throw new UsernameNotFoundException("User not found");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
 
         return new org.springframework.security.core.userdetails.User(
                 dataL.getUserName(), dataL.getPassword(), grantedAuthorities);
@@ -43,4 +43,9 @@ public class DataLServiceImpl implements DataLService {
     public List<DataL> selecteAll() {
         return dataLRespository.findAll();
     }
+
+
+
+
+
 }
