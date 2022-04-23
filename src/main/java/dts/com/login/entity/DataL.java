@@ -3,6 +3,7 @@ package dts.com.login.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,5 +19,6 @@ public class DataL {
     @Column( nullable = false, unique = true)
     private String password;
 
+    private LocalDateTime lastUpdated;
 }
 

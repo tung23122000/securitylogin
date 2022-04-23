@@ -2,23 +2,18 @@ package dts.com.login.controller;
 
 import dts.com.login.entity.DataL;
 import dts.com.login.service.DataLService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class DataLController {
-    @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
-    }
+
 
     private final DataLService dataLService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -27,14 +22,16 @@ public class DataLController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/creat")
-    public DataL creatData(@RequestBody DataL dataL) {
-        dataL.setPassword(this.passwordEncoder.encode(dataL.getPassword()));
-        return dataLService.createD(dataL);
+
+
+    @PostMapping("/api/1.0/users")
+    public DataL createUser(@RequestBody DataL user){
+        return this.dataLService.save(user);
     }
 
-    @GetMapping("/all")
-    public List<DataL> selecteAll() {
-        return dataLService.selecteAll();
+    @PutMapping("/api/1.0/users/{id}")
+    @PreAuthorize("@userAuthorizationService.canUpdate(principal.user.id, #id) or hasRole('ROLE_admin')")
+    public DataL updateUser(@PathVariable long id, @RequestBody DataL user){
+        return this.dataLService.updateUser(id, user);
     }
 }
