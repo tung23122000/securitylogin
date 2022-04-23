@@ -4,38 +4,32 @@ import dts.com.login.entity.CustomDataDetails;
 import dts.com.login.entity.DataL;
 import dts.com.login.respository.DataLRespository;
 import dts.com.login.service.DataLService;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.transaction.Transactional;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class DataLServiceImpl implements DataLService {
+
+//@Autowired
+//    PasswordEncoder passwordEncoder;
+
     private final DataLRespository dataLRespository;
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        DataL dataL = dataLRespository.findByName(userName);
-        if (dataL == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        return new org.springframework.security.core.userdetails.User(
-                dataL.getUserName(), dataL.getPassword(), grantedAuthorities);
+    private final BCryptPasswordEncoder passwordEncoder;
+    public DataLServiceImpl(DataLRespository dataLRespository,
+                            BCryptPasswordEncoder passwordEncoder) {
+        this.dataLRespository = dataLRespository;
+        this.passwordEncoder = passwordEncoder;
     }
-
-    public DataLServiceImpl(DataLRespository dataLRespository) {this.dataLRespository = dataLRespository;}
 
     @Override
     public DataL createD(DataL dataL) {
+//        String encoderPa = this.passwordEncoder.encode(dataL.getPassword());
+//       dataL.setPassword(encoderPa);
         return dataLRespository.save(dataL);
     }
 
@@ -44,8 +38,14 @@ public class DataLServiceImpl implements DataLService {
         return dataLRespository.findAll();
     }
 
-
-
-
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        DataL user = dataLRespository.findByUsername(username);
+//        if (user == null) {
+//            throw new UsernameNotFoundException(username);
+//        }
+//        return new CustomDataDetails(user);
+//
+//    }
 
 }

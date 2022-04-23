@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface DataLService extends UserDetailsService {
-    @Transactional
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+public interface DataLService  {
+
 
     DataL createD(DataL dataL);
-   List<DataL> selecteAll();
+
+    List<DataL> selecteAll();
 }

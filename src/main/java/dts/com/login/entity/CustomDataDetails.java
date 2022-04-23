@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @AllArgsConstructor
+
 public class CustomDataDetails implements UserDetails {
   DataL dataL;
 
