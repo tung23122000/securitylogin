@@ -1,8 +1,12 @@
 package dts.com.login.service.impl;
 
+import dts.com.login.entity.CustomDataDetails;
 import dts.com.login.entity.DataL;
 import dts.com.login.respository.DataLRespository;
 import dts.com.login.service.DataLService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,7 @@ public class DataLServiceImpl implements DataLService {
     public DataLServiceImpl(DataLRespository dataLRespository,
                             PasswordEncoder passwordEncoder) {
         this.dataLRespository = dataLRespository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -36,21 +40,6 @@ public class DataLServiceImpl implements DataLService {
         return dataLRespository.save(inDB);
     }
 
-//    public UserService(DataLRespository userRepository, PasswordEncoder passwordEncoder) {
-//        this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-//
-//    public User save(User user) {
-//        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-//        return this.userRepository.save(user);
-//    }
-//
-//    public User updateUser(long id, User user) {
-//        User inDB = userRepository.getOne(id);
-//        inDB.setDisplayName(user.getDisplayName());
-//        inDB.setLastUpdated(LocalDateTime.now());
-//        return userRepository.save(inDB);
-//    }
+
 
 }

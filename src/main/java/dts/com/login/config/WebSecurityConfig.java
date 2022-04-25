@@ -33,36 +33,40 @@ import java.io.IOException;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    DataAuthService userAuthService;
+    DataAuthService  dataLService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.headers().disable();
-        http.httpBasic().authenticationEntryPoint(new AuthenticationEntryPoint(){
+//        http.csrf().disable();
+//        http.headers().disable();
+//        http.httpBasic().authenticationEntryPoint(new AuthenticationEntryPoint(){
+//
+//            @Override
+//            public void commence(HttpServletRequest request, HttpServletResponse response,
+//                                 AuthenticationException authException) throws IOException, ServletException {
+//                response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+//
+//            }
+//
+//        });
 
-            @Override
-            public void commence(HttpServletRequest request, HttpServletResponse response,
-                                 AuthenticationException authException) throws IOException, ServletException {
-                response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-
-            }
-
-        });
-
-        http
-                .authorizeRequests()
-                .antMatchers("/secured").authenticated()
-                .antMatchers(HttpMethod.PUT, "/api/1.0/users/{id}").authenticated()
+        http.cors()
                 .and()
-                .authorizeRequests().anyRequest().permitAll();
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/api/login", "/all", "/user").permitAll() // Cho phép  truy cập vào  địa chỉ này
+                .antMatchers("/v3/api-docs/**",
+                             "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .anyRequest().authenticated().and().formLogin().permitAll();// Tất cả các request khác đều cần phải xác thực mới
+        // được truy cập
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userAuthService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(dataLService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

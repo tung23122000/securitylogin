@@ -17,21 +17,21 @@ public class DataLController {
 
     private final DataLService dataLService;
     private final BCryptPasswordEncoder passwordEncoder;
+
     public DataLController(DataLService dataLService,
-                           BCryptPasswordEncoder passwordEncoder) {this.dataLService = dataLService;
+                           BCryptPasswordEncoder passwordEncoder) {
+        this.dataLService = dataLService;
         this.passwordEncoder = passwordEncoder;
     }
 
 
-
-    @PostMapping("/api/1.0/users")
-    public DataL createUser(@RequestBody DataL user){
+    @PostMapping("/user")
+    public DataL createUser(@RequestBody DataL user) {
         return this.dataLService.save(user);
     }
 
     @PutMapping("/api/1.0/users/{id}")
-    @PreAuthorize("@userAuthorizationService.canUpdate(principal.user.id, #id) or hasRole('ROLE_admin')")
-    public DataL updateUser(@PathVariable long id, @RequestBody DataL user){
+    public DataL updateUser(@PathVariable long id, @RequestBody DataL user) {
         return this.dataLService.updateUser(id, user);
     }
 }
