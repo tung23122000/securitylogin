@@ -1,4 +1,4 @@
-package dts.com.login.config;
+package dts.com.login.service.impl;
 
 import dts.com.login.entity.CustomDataDetails;
 import dts.com.login.entity.DataL;
